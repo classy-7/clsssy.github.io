@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Content Extractor - PDF Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-file-pdf"></i>
+                <h1>Web Content Extractor</h1>
+            </div>
+            <p class="subtitle">Extract content from any webpage and download as PDF</p>
+        </header>
+
+        <main class="main-content">
+            <section class="input-section">
+                <div class="input-container">
+                    <div class="url-input-wrapper">
+                        <i class="fas fa-globe"></i>
+                        <input 
+                            type="url" 
+                            id="urlInput" 
+                            placeholder="Enter webpage URL (e.g., https://example.com)"
+                            class="url-input"
+                        />
+                        <button id="extractBtn" class="extract-btn">
+                            <i class="fas fa-download"></i>
+                            Extract Content
+                        </button>
+                    </div>
+                    <div class="options">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="includeImages" checked>
+                            <span class="checkmark"></span>
+                            Include Images
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="includeStyles" checked>
+                            <span class="checkmark"></span>
+                            Preserve Styling
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="includeLinks" checked>
+                            <span class="checkmark"></span>
+                            Include Links
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="includeMetadata" checked>
+                            <span class="checkmark"></span>
+                            Include Metadata
+                        </label>
+                    </div>
+                    <div class="format-options">
+                        <label class="radio-label">
+                            <input type="radio" name="pdfFormat" value="standard" checked>
+                            <span class="radio-custom"></span>
+                            Standard PDF
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="pdfFormat" value="enhanced">
+                            <span class="radio-custom"></span>
+                            Enhanced PDF (with images)
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="pdfFormat" value="text">
+                            <span class="radio-custom"></span>
+                            Text Only PDF
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-animation">
+                    <div class="rgb-spinner"></div>
+                    <p>Extracting content...</p>
+                </div>
+            </section>
+
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2>Extracted Content</h2>
+                    <div class="action-buttons">
+                        <button id="copyBtn" class="action-btn copy-btn">
+                            <i class="fas fa-copy"></i>
+                            Copy Text
+                        </button>
+                        <button id="pdfBtn" class="action-btn pdf-btn">
+                            <i class="fas fa-file-pdf"></i>
+                            Download PDF
+                        </button>
+                        <button id="wordBtn" class="action-btn word-btn">
+                            <i class="fas fa-file-word"></i>
+                            Download Word
+                        </button>
+                        <button id="markdownBtn" class="action-btn markdown-btn">
+                            <i class="fas fa-file-code"></i>
+                            Download Markdown
+                        </button>
+                    </div>
+                </div>
+                <div class="content-wrapper">
+                    <div class="content-info">
+                        <span id="pageTitle" class="page-title"></span>
+                        <span id="extractDate" class="extract-date"></span>
+                        <div class="content-stats">
+                            <span id="wordCount" class="stat-item">
+                                <i class="fas fa-file-word"></i>
+                                <span class="stat-value">0</span> words
+                            </span>
+                            <span id="charCount" class="stat-item">
+                                <i class="fas fa-font"></i>
+                                <span class="stat-value">0</span> characters
+                            </span>
+                            <span id="readingTime" class="stat-item">
+                                <i class="fas fa-clock"></i>
+                                <span class="stat-value">0</span> min read
+                            </span>
+                        </div>
+                    </div>
+                    <div id="extractedContent" class="extracted-content" title="Double-click to download as text file"></div>
+                </div>
+            </section>
+
+            <section class="preview-section" id="previewSection" style="display: none;">
+                <div class="preview-header">
+                    <h3>PDF Preview</h3>
+                    <button id="closePreview" class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="pdfPreview" class="pdf-preview"></div>
+            </section>
+
+            <section class="error-section" id="errorSection" style="display: none;">
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Extraction Failed</h3>
+                    <p id="errorText"></p>
+                    <button id="retryBtn" class="retry-btn">
+                        <i class="fas fa-redo"></i>
+                        Try Again
+                    </button>
+                </div>
+            </section>
+
+            </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Web Content Extractor | Powered by Advanced Web Scraping</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
